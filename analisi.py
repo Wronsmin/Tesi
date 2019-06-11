@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
+import pandas as pd
 
 def f(x, a, b, c):
     yield a * x ** 2 + b * x + c
@@ -24,4 +25,8 @@ def Maxima():
             popt, pcov = curve_fit(f, xdata, x[xdata])
             tmax, Emax = vertice(popt)
             t_needed, E_needed = find_nearest( x[t_max-10:t_max], Emax / 2.0)
+
+#main program
+
+dataset = pd.read_csv()
 
