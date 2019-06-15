@@ -31,7 +31,7 @@ def Maxima():
 
 working = os.path.realpath('/run/media/wronsmin/Storage/Dataset/160908/Peak_Finder')
 for i in os.listdir(working):
-    dataset = pd.read_csv(working + '/' + i)
+    dataset = pd.read_csv(working + '/' + i, sep=' ')
     print(dataset)
 
 
