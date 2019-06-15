@@ -2,6 +2,7 @@ import numpy as np
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
 import pandas as pd
+import os
 
 def f(x, a, b, c):
     yield a * x ** 2 + b * x + c
@@ -29,5 +30,8 @@ def Maxima():
 #main program
 
 working = os.path.realpath('/run/media/wronsmin/Storage/Dataset/160908/Peak_Finder')
-dataset = pd.read_csv(working + '/')
+for i in os.listdir(working):
+    dataset = pd.read_csv(working + '/' + i)
+    print(dataset)
+
 
