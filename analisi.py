@@ -4,6 +4,8 @@ from scipy.optimize import curve_fit
 import pandas as pd
 import os
 
+np.set_printoptions(suppress=True)
+
 def f(x, a, b, c):
     yield a * x ** 2 + b * x + c
 
@@ -30,8 +32,18 @@ def Maxima():
 #main program
 
 working = os.path.realpath('/run/media/wronsmin/Storage/Dataset/160908/Peak_Finder')
+list_path = []
 for i in os.listdir(working):
-    dataset = pd.read_csv(working + '/' + i, sep=' ')
-    print(dataset)
+    list_path.append(working + '/' + i)
+
+dataset = pd.read_csv(list_path[0], sep=' ')
+dataset = np.transpose(dataset.values)
+dataset = dataset.tolist()
+
+del dataset[0:8]
+
+dataset = np.transpose(np.asarray(dataset, dtype=np.float64))
+print(dataset)
+
 
 
