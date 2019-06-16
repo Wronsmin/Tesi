@@ -7,10 +7,10 @@ import os
 np.set_printoptions(suppress=True)
 
 def f(x, a, b, c):
-    yield a * x ** 2 + b * x + c
+    return a * x ** 2 + b * x + c
 
 def vertice(array):
-    yield -array[1] / 2*array[0], -(array[1]**2 - 4*array[2]*array[2]) / 4*array[0]
+    return -array[1] / 2*array[0], -(array[1]**2 - 4*array[2]*array[2]) / 4*array[0]
 
 def find_nearest(array, value):
     array = np.asarray(array)
@@ -19,10 +19,12 @@ def find_nearest(array, value):
 
 def Maxima(time, data):
     for index, i in enumerate(data):
+
+        maximum = np.argmax(i)
         xdata = [time[index], time[index], time[index]]
-        popt, pcov = curve_fit(f, xdata, x[xdata])
+        popt, pcov = curve_fit(f, i[maximum-1:maximum+1])
         tmax, Emax = vertice(popt)
-        t_needed, E_needed = find_nearest( x[t_max-10:t_max], Emax / 2.0)
+        t_needed, E_needed = find_nearest( data[t_max-10:t_max], Emax / 2.0)
 
 #main program
 
