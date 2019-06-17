@@ -13,8 +13,7 @@ def vertice(array):
     return -array[1] / 2*array[0], -(array[1]**2 - 4*array[2]*array[2]) / 4*array[0]
 
 def find_nearest(array, value):
-    array = np.asarray(array)
-    idx = (np.abs(array - value)).argmin()
+    idx = argmin(_ for _ in array if i > value)
     return idx, array[idx]
 
 def Maxima(time, data):
@@ -23,7 +22,7 @@ def Maxima(time, data):
         xdata = [time[index], time[index], time[index]]
         popt, pcov = curve_fit(f, i[maximum-1:maximum+1])
         tmax, Emax = vertice(popt)
-        t_needed, E_needed = find_nearest( data[t_max-10:t_max], Emax / 2.0)
+        t_needed, E_needed = find_nearest( i, Emax / 2.0)
 
 def lettura_file():
     #working = os.path.realpath('/run/media/wronsmin/Storage/Dataset/160908/Peak_Finder')
@@ -44,4 +43,6 @@ def lettura_file():
     return timestamp, data
 
 #main program
-if __main__=="__main__"
+if __main__=='__main__':
+    timestamp, data = lettura_file()
+
