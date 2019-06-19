@@ -51,10 +51,11 @@ if __name__=='__main__':
     tmp = 'peak_finder_dump_fifo_1ch_lkrl0-fe-1a01_Thu__08_Sep_2016_15-28-46.csv'
     timestamp, data = lettura_file(tmp)
     maximum = np.argmax(data[1])
-    xdata = [0,1,2]; xdata = np.asarray(xdata)
     if maximum == 0:
+        xdata = [0, 1, 2]; xdata = np.asarray(xdata)
         popt, _ = curve_fit(f, xdata, data[1][0:3])
     else:
+        xdata = [maximum-1, maximum, maximum+1]; xdata = np.asarray(xdata)
         popt, _ = curve_fit(f, xdata, data[1][maximum-1:maximum+2])
     tmax, Emax = vertice(popt)
     t_needed, E_needed = find_nearest(data[1], Emax / 2.0)
