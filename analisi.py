@@ -23,7 +23,10 @@ def Maxima(time, data):
     for index, i in enumerate(data):
         maximum = np.argmax(i)
         xdata = [time[index], time[index], time[index]]
-        popt, pcov = curve_fit(f, i[maximum-1:maximum+1])
+        if maximum == 0:
+            popt, _ = curve_fit(f, xdata, i[0:3])
+        else:
+            popt, _ = curve_fit(f, xdata, i[maximum-1:maximum+2])
         tmax, Emax = vertice(popt)
         t_needed, E_needed = find_nearest( i, Emax / 2.0)
 
@@ -39,7 +42,6 @@ def lettura_file(files):
     data = data.values
     return timestamp, data
 
-#main program
 if __name__=='__main__':
     #working = os.path.realpath('/run/media/wronsmin/Storage/Dataset/160908/Peak_Finder')
     #list_path = []
@@ -48,12 +50,16 @@ if __name__=='__main__':
 
     tmp = 'peak_finder_dump_fifo_1ch_lkrl0-fe-1a01_Thu__08_Sep_2016_15-28-46.csv'
     timestamp, data = lettura_file(tmp)
-    maximum = np.argmax(data[0])
+    maximum = np.argmax(data[1])
     xdata = [0,1,2]; xdata = np.asarray(xdata)
-    popt, _ = curve_fit(f, xdata, data[0][maximum-1:maximum+2])
+    if maximum == 0:
+        popt, _ = curve_fit(f, xdata, data[1][0:3])
+    else:
+        popt, _ = curve_fit(f, xdata, data[1][maximum-1:maximum+2])
     tmax, Emax = vertice(popt)
-    t_needed, E_needed = find_nearest(data[0], Emax / 2.0)
+    t_needed, E_needed = find_nearest(data[1], Emax / 2.0)
+    plot(data[1])
     print(tmax, Emax, t_needed, E_needed)
-    plot(data[0])
-    xdata = np.linspace(0,4,50)
-    plot(xdata, f(xdata, *popt))
+    xdata = np.linspace(0,6,50)
+    plot(xdata+1, f(xdata, *popt))
+    show()
