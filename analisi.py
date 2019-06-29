@@ -22,11 +22,11 @@ def find_nearest(array, value):
 def Maxima(time, data):
     for index, i in enumerate(data):
         maximum = np.argmax(i)
-        xdata = [time[index], time[index], time[index]]
-        if maximum == 0:
-            popt, _ = curve_fit(f, xdata, i[0:3])
-        else:
+        xdata = [0, 1, 2]
+        if maximum == 1:
             popt, _ = curve_fit(f, xdata, i[maximum-1:maximum+2])
+        else:
+            pass
         tmax, Emax = vertice(popt)
         t_needed, E_needed = find_nearest( i, Emax / 2.0)
 
@@ -50,17 +50,16 @@ if __name__=='__main__':
 
     tmp = 'peak_finder_dump_fifo_1ch_lkrl0-fe-1a01_Thu__08_Sep_2016_15-28-46.csv'
     timestamp, data = lettura_file(tmp)
-    maximum = np.argmax(data[1])
-    if maximum == 0:
+    maximum = np.argmax(data[0])
+    if maximum == 1:
         xdata = [0, 1, 2]; xdata = np.asarray(xdata)
-        popt, _ = curve_fit(f, xdata, data[1][0:3])
+        popt, _ = curve_fit(f, xdata, data[0][0:3])
     else:
-        xdata = [maximum-1, maximum, maximum+1]; xdata = np.asarray(xdata)
-        popt, _ = curve_fit(f, xdata, data[1][maximum-1:maximum+2])
+        pass
     tmax, Emax = vertice(popt)
-    t_needed, E_needed = find_nearest(data[1], Emax / 2.0)
-    plot(data[1])
+    t_needed, E_needed = find_nearest(data[0], Emax / 2.0)
+    plot(data[0])
     print(tmax, Emax, t_needed, E_needed)
     xdata = np.linspace(0,6,50)
-    plot(xdata+1, f(xdata, *popt))
+    plot(xdata, f(xdata, *popt))
     show()
