@@ -42,7 +42,7 @@ def lettura_file(files):
     data = data.values
     return timestamp, data
 
-if __name__=='__main__':
+if __name__ == '__main__':
     #working = os.path.realpath('/run/media/wronsmin/Storage/Dataset/160908/Peak_Finder')
     #list_path = []
     #for i in os.listdir(working):
