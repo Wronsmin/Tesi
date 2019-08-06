@@ -23,6 +23,8 @@ def find_nearest(array, value):
     return idx, array[idx]
 
 def Maxima(time, data):
+    global Risultati_retta, Risultati_parabola
+
     for index, i in enumerate(data):
         maximum = np.argmax(i)
         xdata = [0, 1, 2]
@@ -52,6 +54,7 @@ if __name__ == '__main__':
     #for i in os.listdir(working):
     #    list_path.append(working + '/' + i)
 
+    Risultati_parabola = [], Risultati_retta = []
     tmp = 'peak_finder_dump_fifo_1ch_lkrl0-fe-1a01_Thu__08_Sep_2016_15-28-46.csv'
     timestamp, data = lettura_file(tmp)
     Maxima(timestamp, data)
