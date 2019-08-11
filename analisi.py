@@ -9,9 +9,12 @@ import matplotlib.pyplot as plt
 
 np.set_printoptions(suppress=True)
 
-def retta(x, y):
-    m = np.divide(y[1]-y[0], x[1]-x[0])
-    q = -x[1]*m+y[1]
+Risultati_parabola = []
+Risultati_retta = []
+
+def retta(t1, t2, E1, E2):
+    m = np.divide(E2 - E1, t2 - t1)
+    q = -t2 * m + E2
     return -np.divide(q, m)
 
 def parabola(x, a, b, c):
@@ -21,21 +24,31 @@ def vertice(array):
     return np.divide(-array[1], 2.*array[0]), np.divide(-np.power(array[1],2.), 4.*array[0]) + array[2]
 
 def find_nearest(array, value):
-    pos = (np.abs(array[0:4] - value)).argmin()
-    return pos, array[pos]
+    for i in array:
+        if i < value:
+            Emin = i
+    pos = array.tolist().index(Emin)
+    if array[pos] == array[pos + 1]:
+        pos += 1
+    return pos, Emin
 
 def Maxima(time, data):
     global Risultati_retta, Risultati_parabola
 
+    infiniti = 0
     for index, i in enumerate(data):
         maximum = np.argmax(i)
-        xdata = [0, 1, 2]
-        if maximum == 3:
+        xdata = [2, 3, 4]
+        if all( [maximum == 3,
+                i[maximum] > 20,
+                i[0]<i[1]<i[2]<i[3],
+                i[3] > i [4]]
+                ):
             popt, _ = curve_fit(parabola, xdata, i[maximum-1:maximum+2])
             tmax, Emax = vertice(popt)
-            t_needed, E_needed = find_nearest( i, Emax / 2.0)
-            t_retta = retta()
-            print(tmax, Emax, t_needed, E_needed, i)
+            t_needed, E_needed = find_nearest(i[0:4], Emax / 2.0)
+            t_retta = retta(t_needed, t_needed + 1, i[t_needed], i[t_needed + 1])
+            Risultati_retta.append(t_retta), Risultati_parabola.append([tmax, Emax])
         else:
             pass
 
@@ -56,8 +69,6 @@ if __name__ == '__main__':
     #for i in os.listdir(working):
     #    list_path.append(working + '/' + i)
 
-    #Risultati_parabola = [], Risultati_retta = []
     tmp = 'peak_finder_dump_fifo_1ch_lkrl0-fe-1a01_Thu__08_Sep_2016_15-28-46.csv'
     timestamp, data = lettura_file(tmp)
     Maxima(timestamp, data)
-
