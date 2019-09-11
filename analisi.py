@@ -1,18 +1,19 @@
 import numpy as np
-from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
 import pandas as pd
 import os
 from matplotlib.pyplot import *
 import matplotlib.pyplot as plt
 
-
 np.set_printoptions(suppress=True)
 
 Risultati_parabola = []
 Risultati_retta = []
 
-def retta(t1, t2, E1, E2):
+def retta(x):
+    return m * x + q
+
+def interpolazione(t1, t2, E1, E2):
     m = np.divide(E2 - E1, t2 - t1)
     q = -t2 * m + E2
     return -np.divide(q, m)
@@ -35,7 +36,6 @@ def find_nearest(array, value):
 def Maxima(time, data):
     global Risultati_retta, Risultati_parabola
 
-    infiniti = 0
     for index, i in enumerate(data):
         maximum = np.argmax(i)
         xdata = [2, 3, 4]
@@ -47,8 +47,9 @@ def Maxima(time, data):
             popt, _ = curve_fit(parabola, xdata, i[maximum-1:maximum+2])
             tmax, Emax = vertice(popt)
             t_needed, E_needed = find_nearest(i[0:4], Emax / 2.0)
-            t_retta = retta(t_needed, t_needed + 1, i[t_needed], i[t_needed + 1])
+            t_retta = interpolazione(t_needed, t_needed + 1, i[t_needed], i[t_needed + 1])
             Risultati_retta.append(t_retta), Risultati_parabola.append([tmax, Emax])
+            np.savez('risutati.npz', np.array(Risultati_retta), np.array(Risultati_parabola))
         else:
             pass
 
