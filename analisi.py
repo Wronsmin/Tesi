@@ -8,13 +8,14 @@ working = os.path.realpath('/mnt/c/Users/cosmi/Desktop/Python/Tesi/Dataset/16090
 list_path = []
 total_data = 0
 energie, tempi = [], []
+timestamp, data = [], []
 
 for i in os.listdir(working):
     #list_path.append(working + '/' + i)
-    timestamp, data = lettura_file(working + '/' + i)
-    a, b = Maxima(timestamp, data)
-    energie, tempi = energie + b, tempi + a
-    total_data += len(timestamp)
+    a, b = lettura_file(working + '/' + i)
+    timestamp.extend(a), data.extend(b)
+
+tempi, energie = Maxima(timestamp, data)
 
 title('Energia vs $\Delta t$')
 ylabel('Energia')
