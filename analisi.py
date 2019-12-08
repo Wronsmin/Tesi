@@ -5,20 +5,21 @@ from strumenti import *
 np.set_printoptions(suppress=True)
 
 immagini='/mnt/c/Users/cosmi/Desktop/Python/Tesi/Immagini'
-working_linux = os.path.realpath('/mnt/c/Users/cosmi/Desktop/Python/Tesi/Dataset/160908/Peak_Finder')
+working = os.path.realpath('/mnt/c/Users/cosmi/Desktop/Python/Tesi/Dataset/160908/Peak_Finder')
 list_path = []
 total_data = 0
 timestamp, data = [], []
-energie, tempi = [], []
-
-for i in os.listdir(working):
-    timestamp, data += lettura_file(working + '/' + i)
 
 E_min = [20, 30, 40, 50]
+energie, tempi = [len(E_min)], [len(E_min)]
+
+for i in os.listdir(working):
+    timestamp, data = lettura_file(working + '/' + i)
+    for j, k in enumerate(E_min): 
+        a, b = Maxima(timestamp, data, k)
+        energie[j], tempi[j] = energie[j] + b, tempi[j] + a
 
 for i in E_min:
-    energie, tempi = Maxima(timestamp, data, E_min)
-
     title('Energia vs $\Delta t$')
     ylabel('Energia')
     xlabel('$\Delta$ t')
