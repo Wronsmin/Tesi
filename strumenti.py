@@ -26,14 +26,14 @@ def find_nearest(array, value):
         pos += 1
     return pos, Emin
 
-def Maxima(time, data):
+def Maxima(time, data, Emin):
     tempi, energia = [], []
 
     for index, i in enumerate(data):
         maximum = np.argmax(i)
         xdata = [2, 3, 4]
         if all( [maximum == 3,
-                i[maximum] > 20,
+                i[maximum] > Emin,
                 i[0]<i[1]<i[2]<i[3],
                 i[3] > i [4]]
                 ):
