@@ -10,16 +10,15 @@ list_path = []
 total_data = 0
 timestamp, data = [], []
 
-E_min = [20, 30, 40, 50]
-energie, tempi = [len(E_min)], [len(E_min)]
+E_min = [20, 30, 40, 500]
 
 for i in os.listdir(working):
-    timestamp, data = lettura_file(working + '/' + i)
-    for j, k in enumerate(E_min): 
-        a, b = Maxima(timestamp, data, k)
-        energie[j], tempi[j] = energie[j] + b, tempi[j] + a
+    a, b = lettura_file(working + '/' + i)
+    timestamp.extend(a), data.extend(b)
 
 for i in E_min:
+    tempi, energie = Maxima(timestamp, data, i) 
+
     title('Energia vs $\Delta t$')
     ylabel('Energia')
     xlabel('$\Delta$ t')
@@ -51,7 +50,7 @@ for i in E_min:
     title('Istogramma Tempi')
     ylabel('Conteggi')
     xlabel('$\Delta$t')
-    hist(tempi, bins='auto')
+    hist(tempi, bins=35)
     savefig(immagini + "/E_min"  + str(i)  + '/hist_tempi.png')
     show()
 
