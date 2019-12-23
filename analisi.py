@@ -20,10 +20,11 @@ for i in os.listdir(working):
 
 for i in E_min:
     tempi, energie = Maxima(timestamp, data, i) 
+    tempi = np.asarray(tempi) * 25
 
     title('Energia vs $\Delta t$')
     ylabel('Energia')
-    xlabel('$\Delta$ t')
+    xlabel('$\Delta$ t (ns)')
     scatter(tempi, energie, s=3)
     savefig(immagini + "/E_min"  + str(i)  + '/energia_vs_tempo.png')
     close()
@@ -36,27 +37,47 @@ for i in E_min:
     close()
 
     title('Plot Tempi')
-    ylabel('$\Delta$t')
+    ylabel('$\Delta$t (ns)')
     xlabel('# evento')
     plot(tempi)
     savefig(immagini + "/E_min"  + str(i)  + '/tempi.png')
     close()
 
     title('Istogramma Energie')
-    ylabel('Conteggi')
+    ylabel('Probabilità')
     xlabel('Energia')
     hist(energie, bins='auto')
     savefig(immagini + "/E_min"  + str(i)  + '/hist_energie.png')
     close()
 
-    n , bin_edges, patches = hist(tempi, bins = 30, normed = True)
+    n , bin_edges, patches = hist(tempi, bins = 'auto', normed = True)
     (mu, sigma) = norm.fit(tempi)
-    x = np.arange(1, 3, 1/len(tempi))
-    y = mlab.normpdf( x, mu, sigma)
-    plot(x, y)
-    title('$\mathrm{Istogramma\ Tempi}\ \mu=%.3f,\ \sigma=%.3f$' %(mu, sigma))
-    ylabel('Conteggi')
-    xlabel('$\Delta$t')
+    x = np.arange(min(bin_edges)-0.5, max(bin_edges)+0.5, 1/len(tempi))
+    y = mlab.normpdf(x, mu, sigma)
+    param = gamma.fit(tempi)
+    mean, var = gamma.mean(*param), gamma.var(*param)
+
+    textstr = '\n'.join((
+        r'$\mu=%.2f$' % (mu, ),
+        r'$\sigma=%.2f$' % (sigma, )))
+    props = dict(boxstyle='round', facecolor='red', alpha=0.4)
+    text(int(max(bin_edges))-4, 0.045, textstr, fontsize=9, verticalalignment='top', bbox=props)
+
+    plot(x, y, color='red', label='Gaussiana')
+    y = gamma.pdf(x, *param)
+
+    textstr = '\n'.join((
+        r'$\mu=%.2f$' % (mean, ),
+        r'$\sigma=%.2f$' % (var, )))
+    props = dict(boxstyle='round', facecolor='orange', alpha=0.4)
+    text(int(max(bin_edges))-4, 0.038, textstr, fontsize=9, verticalalignment='top', bbox=props)
+
+    plot(x, y, color='orange', label='Gamma')
+    title('$\mathrm{Istogramma\ Tempi}$ \n ($ E_{min}>%d$, Conteggi totali = %d) ' %(i, len(tempi)) )
+    ylabel('Probabilità')
+    xlabel('$\Delta$t (ns)')
+    legend()
     savefig(immagini + "/E_min"  + str(i)  + '/hist_tempi.png')
     close()
+    #print(sum(n))
 
