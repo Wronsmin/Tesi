@@ -1,13 +1,14 @@
 from matplotlib.pyplot import *
 import matplotlib.mlab as mlab
-import os
+from os.path import dirname, abspath
 from strumenti import *
 from scipy.stats import *
 
 np.set_printoptions(suppress=True)
 
-immagini='/mnt/c/Users/cosmi/Desktop/Python/Tesi/Immagini'
-path = 'Dataset/160908/Peak_Finder/'
+folder_path = dirname(abspath(__file__))
+immagini= folder_path + '/Immagini/'
+path = folder_path + '/Dataset/160908/Peak_Finder/'
 total_data = 0
 
 E_min = [30]
@@ -17,7 +18,6 @@ raw_data = lettura_file(path)
 for i in E_min:
     data = Maxima(raw_data, i)
     #tempi = np.asarray(tempi) * 25
-    print(len(data))
 
     title('Energia vs $\Delta t$')
     ylabel('Energia')
