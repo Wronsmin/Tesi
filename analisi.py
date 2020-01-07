@@ -1,5 +1,4 @@
 from matplotlib.pyplot import *
-import matplotlib.mlab as mlab
 from os.path import dirname, abspath
 from strumenti import *
 from scipy.stats import *
@@ -48,10 +47,10 @@ for i in E_min:
     savefig(immagini + "/E_min"  + str(i)  + '/hist_energie.png')
     close()
 
-    n , bin_edges, patches = hist(data['tmax']-data['t_retta'], bins = 'auto', normed = True)
+    n , bin_edges, patches = hist(data['tmax']-data['t_retta'], bins = 'auto', density = True)
     (mu, sigma) = norm.fit(data['tmax']-data['t_retta'])
     x = np.arange(min(bin_edges)-0.5, max(bin_edges)+0.5, 1/len(data))
-    y = mlab.normpdf(x, mu, sigma)
+    y = norm.pdf(x, mu, sigma)
     param = gamma.fit(data['tmax']-data['t_retta'])
     mean, var = gamma.mean(*param), gamma.var(*param)
 
