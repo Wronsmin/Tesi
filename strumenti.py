@@ -39,7 +39,7 @@ def Maxima(raw_data, Emin):
 
     data['t_retta'] = 0
 
-    mask = (((data.a) <= (data.Emax05)) & ((data.Emax05) <= (data.b))) 
+    mask = (((data.a) <= (data.Emax05)) & ((data.Emax05) <= (data.b)))
     data.loc[mask, 't_retta'] = (data['Emax05'] - data['a']) * 1/(data['b'] - data['a'])
 
     mask = (((data.b) <= (data.Emax05)) & ((data.Emax05) <= (data.c)))

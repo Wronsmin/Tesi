@@ -1,42 +1,44 @@
 from matplotlib.pyplot import *
-from os.path import dirname, abspath
+import os.path
 from strumenti import *
 from scipy.stats import *
 
 np.set_printoptions(suppress=True)
 
-folder_path = dirname(abspath(__file__))
-immagini= folder_path + '/Immagini/'
+folder_path = os.getcwd()
+immagini= folder_path + '/Immagini'
 path = folder_path + '/Dataset/160908/Peak_Finder/'
-total_data = 0
 
-E_min = [30]
+E_min = [20,30,40,50]
 
 raw_data = lettura_file(path)
+raw_data = raw_data.query('d < 256')
 
 for i in E_min:
     data = Maxima(raw_data, i)
     #tempi = np.asarray(tempi) * 25
+    PATH = immagini + "/E_min"  + str(i)
+    os.makedirs(PATH, exist_ok=True)
 
     title('Energia vs $\Delta t$')
     ylabel('Energia')
     xlabel('$\Delta$ t (ns)')
     scatter(data['tmax']-data['t_retta'], data['Emax'], s=3)
-    savefig(immagini + "/E_min"  + str(i)  + '/energia_vs_tempo.png')
+    savefig(PATH + '/energia_vs_tempo.png')
     close()
 
     title('Plot Energie')
     ylabel('Energia')
     xlabel('# evento')
     plot(data['Emax'])
-    savefig(immagini + "/E_min"  + str(i)  + '/energie.png')
+    savefig(PATH + '/energie.png')
     close()
 
     title('Plot Tempi')
     ylabel('$\Delta$t (ns)')
     xlabel('# evento')
     plot(data['tmax']-data['t_retta'])
-    savefig(immagini + "/E_min"  + str(i)  + '/tempi.png')
+    savefig(PATH + '/tempi.png')
     close()
 
     title('Istogramma Energie')
@@ -44,7 +46,7 @@ for i in E_min:
     xlabel('Energia')
     #yscale('log')
     hist(data['Emax'], bins='auto')
-    savefig(immagini + "/E_min"  + str(i)  + '/hist_energie.png')
+    savefig(PATH + '/hist_energie.png')
     close()
 
     n , bin_edges, patches = hist(data['tmax']-data['t_retta'], bins = 'auto', density = True)
@@ -70,9 +72,9 @@ for i in E_min:
     text(int(max(bin_edges))-4, 0.09, textstr, fontsize=9, verticalalignment='top', bbox=props)
 
     plot(x, y, color='orange', label='Gamma')
-    title('$\mathrm{Istogramma\ Tempi}$ \n ($ E_{min}<%d$, Conteggi totali = %d) ' %(i, len(data)) )
+    title('$\mathrm{Istogramma\ Tempi}$ \n ($ E_{min}>%d$, Conteggi totali = %d / %d) ' %(i, len(data), len(raw_data)) )
     ylabel('Probabilità')
     xlabel('$\Delta$t (ns)')
     legend()
-    savefig(immagini + "/E_min"  + str(i)  + '/hist_tempi.png')
+    savefig(PATH + '/hist_tempi.png')
     close()
