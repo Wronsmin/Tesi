@@ -20,27 +20,6 @@ for i in E_min:
     PATH = immagini + "/E_min"  + str(i)
     os.makedirs(PATH, exist_ok=True)
 
-    title('Energia vs $\Delta t$')
-    ylabel('Energia')
-    xlabel('$\Delta$ t (ns)')
-    scatter(data['tmax']-data['t_retta'], data['Emax'], s=3)
-    savefig(PATH + '/energia_vs_tempo.png')
-    close()
-
-    title('Plot Energie')
-    ylabel('Energia')
-    xlabel('# evento')
-    plot(data['Emax'])
-    savefig(PATH + '/energie.png')
-    close()
-
-    title('Plot Tempi')
-    ylabel('$\Delta$t (ns)')
-    xlabel('# evento')
-    plot(data['tmax']-data['t_retta'])
-    savefig(PATH + '/tempi.png')
-    close()
-
     title('Istogramma Finetime')
     ylabel('Probabilità')
     xlabel('Energia')
