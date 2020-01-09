@@ -14,6 +14,8 @@ E_min = [20,30,40,50]
 raw_data = lettura_file(path)
 raw_data = raw_data.query('d < 256')
 
+pile_up(path)
+
 for i in E_min:
     data = Maxima(raw_data, i)
     #tempi = np.asarray(tempi) * 25

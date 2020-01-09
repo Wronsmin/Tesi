@@ -2,6 +2,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 import pandas as pd
 import os
+from parse import parse
 
 pd.options.mode.chained_assignment = None
 
@@ -51,3 +52,7 @@ def pile_up(path):
                                     '4th_sample': 'd',
                                     '5th_sample': 'e'})
         data = data.query('a<b & b>c & c<d & d>e & b<d')
+        pattern = 'peak_finder_dump_fifo_1ch_lkrl0-fe-{code}_Thu__08_Sep_2016_15-28-46.csv'
+        c = parse(pattern, i)
+        os.makedirs(os.getcwd() + '/Pile_Up/', exist_ok=True)
+        data.to_csv(os.getcwd() + '/Pile_Up/' + '%s.csv' %(c['code']), sep= ' ')
