@@ -9,7 +9,7 @@ folder_path = os.getcwd()
 immagini= folder_path + '/Immagini'
 path = folder_path + '/Dataset/160908/Peak_Finder/'
 
-E_min = [180] #incrementare a passi di 64
+E_min = [64,128,192] #incrementare a passi di 64
 
 raw_data = lettura_file(path)
 raw_data = raw_data.query('d < 256')
@@ -41,25 +41,24 @@ for i in E_min:
     savefig(PATH + '/tempi.png')
     close()
 
-    title('Istogramma max')
+    title('Istogramma Finetime')
     ylabel('Probabilità')
     xlabel('Energia')
     #yscale('log')
-    hist(data['tmax'], bins='auto')
-    savefig(PATH + '/hist_energie.png')
+    hist(data['finetime'], bins=256)
+    savefig(PATH + '/hist_finetime.png')
     close()
 
     n , bin_edges, patches = hist(tempi, bins = 'auto', density = True)
     (mu, sigma) = norm.fit(tempi)
     x = np.arange(min(bin_edges)-0.5, max(bin_edges)+0.5, 1/len(data))
     y = norm.pdf(x, mu, sigma)
-    print(mu, sigma)
 
     textstr = '\n'.join((
         r'$\mu=%.2f$' % (mu, ),
         r'$\sigma=%.2f$' % (sigma, )))
     props = dict(boxstyle='round', facecolor='red', alpha=0.4)
-    text(int(max(bin_edges))-4, 0.11, textstr, fontsize=9, verticalalignment='top', bbox=props)
+    text(int(max(bin_edges))-4, 0.05, textstr, fontsize=9, verticalalignment='top', bbox=props)
 
     plot(x, y, color='red', label='Gaussiana')
     title('$\mathrm{Istogramma\ Tempi}$ \n ($ E_{min}>%d$, Conteggi totali = %d / %d) ' %(i, len(data), len(raw_data)) )
