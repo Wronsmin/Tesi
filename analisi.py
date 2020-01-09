@@ -20,7 +20,7 @@ for i in E_min:
     PATH = immagini + "/E_min"  + str(i)
     os.makedirs(PATH, exist_ok=True)
 
-    title('Istogramma Finetime')
+    title('Istogramma Finetime\n ($ E_{min}>%d$, Conteggi totali = %d / %d) ' %(i, len(data), len(raw_data)))
     ylabel('Probabilità')
     xlabel('Energia')
     #yscale('log')
@@ -37,7 +37,7 @@ for i in E_min:
         r'$\mu=%.2f$' % (mu, ),
         r'$\sigma=%.2f$' % (sigma, )))
     props = dict(boxstyle='round', facecolor='red', alpha=0.4)
-    text(int(max(bin_edges))-4, 0.05, textstr, fontsize=9, verticalalignment='top', bbox=props)
+    text(int(max(bin_edges))-2, max(n)-0.05, textstr, fontsize=9, verticalalignment='top', bbox=props)
 
     plot(x, y, color='red', label='Gaussiana')
     title('$\mathrm{Istogramma\ Tempi}$ \n ($ E_{min}>%d$, Conteggi totali = %d / %d) ' %(i, len(data), len(raw_data)) )
