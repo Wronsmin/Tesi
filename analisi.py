@@ -14,7 +14,7 @@ E_max = [128,192,256]
 
 raw_data = lettura_file(path)
 
-#pile_up(path)
+pile_up(path)
 
 for i,j in zip(E_min, E_max):
     data = Maxima(raw_data, i,j)
@@ -47,7 +47,7 @@ for i,j in zip(E_min, E_max):
     xlabel('$\Delta$t (ns)')
     legend()
     draw()
-    p = legend().get_window_extent()
+    p = legend().get_window_extent() #per grafici migliori
 
     #legenda per Gaussiana
     textstr = '\n'.join((
