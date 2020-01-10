@@ -9,18 +9,20 @@ folder_path = os.getcwd()
 immagini= folder_path + '/Immagini'
 path = folder_path + '/Dataset/160908/Peak_Finder/'
 
-E_min = [64,128,192] #incrementare a passi di 64
+E_min = [64,128,192]
+E_max = [128,192,256]
 
 raw_data = lettura_file(path)
-raw_data = raw_data.query('d < 256')
 
-for i in E_min:
-    data = Maxima(raw_data, i)
+#pile_up(path)
+
+for i,j in zip(E_min, E_max):
+    data = Maxima(raw_data, i,j)
     tempi = np.asarray(abs(data['tmax']-data['t_retta'])) * 25
     PATH = immagini + "/E_min"  + str(i)
     os.makedirs(PATH, exist_ok=True)
 
-    title('Istogramma Finetime\n ($ E_{min}>%d$, Conteggi totali = %d / %d) ' %(i, len(data), len(raw_data)))
+    title('Istogramma Finetime\n ($%d<E<%d$, Conteggi totali = %d / %d) ' %(i,j, len(data), len(raw_data)))
     ylabel('Conteggi')
     xlabel('Finetime')
     #yscale('log')
@@ -40,7 +42,7 @@ for i in E_min:
 
     plot(x, y, color='orange', label='Gamma')
 
-    title('$\mathrm{Istogramma\ Tempi}$ \n ($ E_{min}>%d$, Conteggi totali = %d / %d) ' %(i, len(data), len(raw_data)) )
+    title('$\mathrm{Istogramma\ Tempi}$ \n ($%d<E<%d$, Conteggi totali = %d / %d) ' %(i,j, len(data), len(raw_data)) )
     ylabel('Probabilità')
     xlabel('$\Delta$t (ns)')
     legend()

@@ -2,11 +2,12 @@ import numpy as np
 from scipy.optimize import curve_fit
 import pandas as pd
 import os
-#from parse import parse
+from parse import parse
 
 pd.options.mode.chained_assignment = None
 
-def Maxima(raw_data, Emin):
+def Maxima(raw_data, Emin, Emax):
+    data = raw_data.query('d< %d' %Emax)
     data = raw_data.query('d > %d & a<b<c<d & d>e' %Emin) #filtraggio dei dati in modo da selezionare solo gli eventi che soddisfano la condizione del query
     #parametri della parabola generica di eq ax^2 + bx + c  
     popt = pd.DataFrame({'a': 0.5 * data['c'] - data['d'] + 0.5*data['e'],
@@ -55,17 +56,17 @@ def lettura_file(path):
                                 '5th_sample': 'e'}) #ho dovuto rinominare le colonne per problemi con il query
     return data
 
-#   def pile_up(path):
-#       files = os.listdir(path)
-#       for i in files:
-#           data = pd.read_csv(path + i, sep=' ')
-#           data = data.rename(columns={'1st_sample': 'a',
-#                                       '2nd_sample': 'b',
-#                                       '3rd_sample': 'c',
-#                                       '4th_sample': 'd',
-#                                       '5th_sample': 'e'})
-#           data = data.query('a<b & b>c & c<d & d>e & b<d')
-#           pattern = 'peak_finder_dump_fifo_1ch_lkrl0-fe-{code}_Thu__08_Sep_2016_15-28-46.csv'
-#           c = parse(pattern, i)
-#           os.makedirs(os.getcwd() + '/Pile_Up/', exist_ok=True)
-#           data.to_csv(os.getcwd() + '/Pile_Up/' + '%s.csv' %(c['code']), sep= ' ')
+def pile_up(path):
+    files = os.listdir(path)
+    for i in files:
+       data = pd.read_csv(path + i, sep=' ')
+       data = data.rename(columns={'1st_sample': 'a',
+                                   '2nd_sample': 'b',
+                                   '3rd_sample': 'c',
+                                   '4th_sample': 'd',
+                                   '5th_sample': 'e'})
+       data = data[~ (((data.a)<(data.b))&((data.b)<(data.c))&((data.c)<(data.d)))]
+       pattern = 'peak_finder_dump_fifo_1ch_lkrl0-fe-{code}_Thu__08_Sep_2016_15-28-46.csv'
+       c = parse(pattern, i)
+       os.makedirs(os.getcwd() + '/Pile_Up/', exist_ok=True)
+       data.to_csv(os.getcwd() + '/Pile_Up/' + '%s.csv' %(c['code']), sep= ' ')
