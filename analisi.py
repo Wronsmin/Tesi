@@ -26,11 +26,11 @@ for i,j in zip(E_min, E_max):
     ylabel('Conteggi')
     xlabel('Finetime')
     #yscale('log')
-    hist(data['finetime'], bins=256)
+    hist(data['finetime'], bins=256, alpha=0.70)
     savefig(PATH + '/hist_finetime.png')
     close()
 
-    n , bin_edges, patches = hist(tempi, bins = 'auto', density = True)
+    n , bin_edges, patches = hist(tempi, bins = 'auto', density = True, alpha=0.70)
     (mu, sigma) = norm.fit(tempi)
     x = np.arange(min(bin_edges)-0.5, max(bin_edges)+0.5, 1/len(data))
     y = norm.pdf(x, mu, sigma)

@@ -73,4 +73,4 @@ def pile_up(path):
        os.makedirs(os.getcwd() + '/Pile_Up/', exist_ok=True)
        data.to_csv(os.getcwd() + '/Pile_Up/' + '%s.csv' %(c['code']), sep= ' ')
        cosi, buoni =  len(data), len(boni)
-       print('%d\t%d\t%.4f'  %(cosi, buoni, cosi/(cosi+buoni)))
+       #print('%d\t%d\t%.4f'  %(cosi, buoni, cosi/(cosi+buoni)))
