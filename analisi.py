@@ -14,9 +14,10 @@ E_max = [128,192,256]
 
 raw_data = lettura_file(path)
 
-pile_up(path)
 
 for i,j in zip(E_min, E_max):
+    pile_up(path, j, i)
+
     data = Maxima(raw_data, i,j)
     tempi = np.asarray(abs(data['tmax']-data['t_retta'])) * 25
     PATH = immagini + "/E_min"  + str(i)
@@ -25,12 +26,20 @@ for i,j in zip(E_min, E_max):
     title('Istogramma Finetime\n ($%d<E<%d$, Conteggi totali = %d / %d) ' %(i,j, len(data), len(raw_data)))
     ylabel('Conteggi')
     xlabel('Finetime')
+<<<<<<< HEAD
     #yscale('log')
     hist(data['finetime'], bins=256, alpha=0.70)
     savefig(PATH + '/hist_finetime.png')
     close()
 
     n , bin_edges, patches = hist(tempi, bins = 'auto', density = True, alpha=0.70)
+=======
+    hist(data['finetime'], bins=256, alpha=0.75)
+    #savefig(PATH + '/hist_finetime.png')
+    close()
+
+    n , bin_edges, patches = hist(tempi, bins = 'auto', density = True, alpha=0.75)
+>>>>>>> 1c5f049e30547b712e454afa5bd2e73c73e84f43
     (mu, sigma) = norm.fit(tempi)
     x = np.arange(min(bin_edges)-0.5, max(bin_edges)+0.5, 1/len(data))
     y = norm.pdf(x, mu, sigma)
@@ -61,7 +70,7 @@ for i,j in zip(E_min, E_max):
        r'$\mu=%.2f$' % (mean, ),
        r'$\sigma=%.2f$' % (var, )))
     props = dict(boxstyle='round', facecolor='orange', alpha=0.4)
-    text(p.p0[0]+5,p.p0[1]-54, textstr, fontsize=9, verticalalignment='top', bbox=props, transform=None)
+    text(p.p0[0]+5,p.p0[1], textstr, fontsize=9, verticalalignment='top', bbox=props, transform=None)
 
-    savefig(PATH + '/hist_tempi.png')
+    #savefig(PATH + '/hist_tempi.png')
     close()
