@@ -26,20 +26,17 @@ for i,j in zip(E_min, E_max):
     title('Istogramma Finetime\n ($%d<E<%d$, Conteggi totali = %d / %d) ' %(i,j, len(data), len(raw_data)))
     ylabel('Conteggi')
     xlabel('Finetime')
-<<<<<<< HEAD
     #yscale('log')
     hist(data['finetime'], bins=256, alpha=0.70)
     savefig(PATH + '/hist_finetime.png')
     close()
 
     n , bin_edges, patches = hist(tempi, bins = 'auto', density = True, alpha=0.70)
-=======
     hist(data['finetime'], bins=256, alpha=0.75)
     #savefig(PATH + '/hist_finetime.png')
     close()
 
     n , bin_edges, patches = hist(tempi, bins = 'auto', density = True, alpha=0.75)
->>>>>>> 1c5f049e30547b712e454afa5bd2e73c73e84f43
     (mu, sigma) = norm.fit(tempi)
     x = np.arange(min(bin_edges)-0.5, max(bin_edges)+0.5, 1/len(data))
     y = norm.pdf(x, mu, sigma)

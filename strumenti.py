@@ -23,7 +23,7 @@ def Maxima(raw_data, Emin, Emax):
 
     data.to_csv(os.getcwd() + 'test.csv', sep= ' ')
 
-    #parametri della parabola generica di eq ax^2 + bx + c  
+    #parametri della parabola generica di eq ax^2 + bx + c
     popt = pd.DataFrame({'a': 0.5 * data['c'] - data['d'] + 0.5*data['e'],
                          'b': -0.5 * data['c'] + 0.5 * data['e'],
                          'c': data['d']})
@@ -89,10 +89,7 @@ def pile_up(path, Emax, Emin):
        c = parse(pattern, i)
        os.makedirs(os.getcwd() + '/Pile_Up/', exist_ok=True)
        data.to_csv(os.getcwd() + '/Pile_Up/' + '%s.csv' %(c['code']), sep= ' ')
-<<<<<<< HEAD
        cosi, buoni =  len(data), len(boni)
        #print('%d\t%d\t%.4f'  %(cosi, buoni, cosi/(cosi+buoni)))
-=======
        pile = len(data)
        #print('%d\t%d\t%.4f'  %(pile, buoni, pile/(pile+buoni)))
->>>>>>> 1c5f049e30547b712e454afa5bd2e73c73e84f43
