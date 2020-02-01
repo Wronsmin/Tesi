@@ -4,24 +4,9 @@ import pandas as pd
 import os
 from parse import parse
 
-pd.options.mode.chained_assignment = None
-
 def Maxima(raw_data, Emin, Emax):
-    print(len(raw_data))
     data = raw_data.query('d< %d' %Emax)
     data = data.query('d > %d & a<b<c<d & d>e' %Emin) #filtraggio dei dati in modo da selezionare solo gli eventi che soddisfano la condizione del query
-
-    raw_data['picchi'] = 0
-
-    print(raw_data)
-
-    mask = (((data.d)>Emin) & ((data.a)<(data.b)) & ((data.b)<(data.c)) &((data.c)<(data.d)) & ((data.d)>(data.e)) )
-
-    raw_data.loc[mask, 'picchi'] = 1111
-    mask =  (((data.d)>Emin) & ((data.c)<(data.d)) & ((data.d)>(data.e)) &(((data.a)>(data.b))|((data.b)>(data.c))) )
-    raw_data.loc[mask, 'picchi'] = 2222
-
-    data.to_csv(os.getcwd() + 'test.csv', sep= ' ')
 
     #parametri della parabola generica di eq ax^2 + bx + c
     popt = pd.DataFrame({'a': 0.5 * data['c'] - data['d'] + 0.5*data['e'],
