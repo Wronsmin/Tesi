@@ -15,7 +15,6 @@ E_max = [128,192,256]
 
 raw_data = lettura_file(path)
 
-
 for i,j in zip(E_min, E_max):
     #pile_up(path, j, i)
 
