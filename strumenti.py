@@ -58,29 +58,21 @@ def lettura_file(path):
                                 '5th_sample': 'e'}) #ho dovuto rinominare le colonne per problemi con il query
     return data
 
-def pile_up(path, Emax, Emin):
-    files = os.listdir(path)
-    print('%d <E<%d\t' %(Emin, Emax))
-    for i in files:
-       data = pd.read_csv(path + i, sep=' ')
-       data = data.rename(columns={'1st_sample': 'a',
-                                   '2nd_sample': 'b',
-                                   '3rd_sample': 'c',
-                                   '4th_sample': 'd',
-                                   '5th_sample': 'e'})
-       data = data.query('d< %d' %Emax)
-       maxi = data.query('d > %d & a<b<c<d & d>e' %Emin) #filtraggio dei dati in modo da selezionare solo gli eventi che soddisfano la condizione del query
-       pileup = data.query('d > %d & c<d & d>e & (a>b | b>c)' %Emin)
-       buoni = len(maxi)
-       #data = data[~ (((data.a)<(data.b))&((data.b)<(data.c))&((data.c)<(data.d)))]
-       pattern = 'peak_finder_dump_fifo_1ch_lkrl0-fe-{code}_Thu__08_Sep_2016_15-28-46.csv'
-       c = parse(pattern, i)
-       os.makedirs(os.getcwd() + '/Pile_Up/', exist_ok=True)
-       data.to_csv(os.getcwd() + '/Pile_Up/' + '%s.csv' %(c['code']), sep= ' ')
-       cosi, buoni =  len(data), len(boni)
-       #print('%d\t%d\t%.4f'  %(cosi, buoni, cosi/(cosi+buoni)))
-       pile = len(data)
-       #print('%d\t%d\t%.4f'  %(pile, buoni, pile/(pile+buoni)))
+def picchi(path):
+    for f in os.listdir(path):
+        data = pd.read_csv(path + f, sep=' ')
+        data = data.rename(columns={'1st_sample': 'a',
+                                    '2nd_sample': 'b',
+                                    '3rd_sample': 'c',
+                                    '4th_sample': 'd',
+                                    '5th_sample': 'e'})
+        data = data.query('d< 256')
+        data = data.query('d > 64 & a<b<c<d & d>e')
+        pattern = 'peak_finder_dump_fifo_1ch_lkrl0-fe-{code}_Thu__08_Sep_2016_15-28-46.csv'
+        c = parse(pattern, f)
+        os.makedirs(os.getcwd() + '/Picchi/', exist_ok=True)
+        data.to_csv(os.getcwd() + '/Picchi/' + '%s.csv' %(c['code']), sep= ' ')
+    return None
 
 def analisi(raw_data, E_min, E_max):
     folder_path = os.getcwd()
