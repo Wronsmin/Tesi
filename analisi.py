@@ -14,6 +14,8 @@ E_max = [128,192,256]
 
 raw_data = lettura_file(path)
 
-analisi(raw_data, E_min, E_max)
+#print(raw_data.burst.unique())
+
+#analisi(raw_data, E_min, E_max)
 
 picchi(path)
