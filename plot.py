@@ -9,7 +9,9 @@ file_path = folder_path + '/Picchi'
 
 x= []
 y = []
+interv = [13,26,39,56]
 
+colori = ['grey', 'gold', 'orange', 'red']
 for i, f in enumerate(os.listdir(file_path)):
     data = pd.read_csv(file_path + '/' + f, sep= ' ')
 
@@ -28,10 +30,20 @@ combos = list(zip(x, y))
 unici = list(set(combos))
 counts = Counter(combos)
 frequenze = []
+colors = []
 for i in unici:
     frequenze.append(counts[i])
 
+for i in frequenze:
+    if 0 <= i < interv[0]:
+        colors.append(colori[0])
+    elif interv[0] <= i < interv[1]:
+        colors.append(colori[1])
+    elif interv[1] <= i < interv[2]:
+        colors.append(colori[2])
+    elif interv[2] <= i <= interv[3]:
+        colors.append(colori[3])
+
 unici= list(zip(*unici))
-print(max(frequenze), min(frequenze))
-scatter(unici[0], unici[1], s=frequenze) #, marker='s'
+scatter(unici[0], unici[1], c=colors) #, marker='s'
 show()
