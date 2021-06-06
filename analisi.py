@@ -1,7 +1,6 @@
 import os.path
 from strumenti import *
 
-
 pd.options.mode.chained_assignment = None
 np.set_printoptions(suppress=True)
 
@@ -14,8 +13,8 @@ E_max = [128,192,256]
 
 raw_data = lettura_file(path)
 
-#print(raw_data.burst.unique())
-
-#analisi(raw_data, E_min, E_max)
+analisi(raw_data, E_min, E_max)
 
 picchi(path)
+
+energie(raw_data)
